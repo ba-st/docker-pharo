@@ -1,19 +1,19 @@
 sudo: required
-
-env:
-    global:
-        - DOCKER_PASSWORD: ''
-        - DOCKER_USERNAME: ''
-
 services:
-    - docker
-
-before_install:
-    - docker build -t basmalltalk/pharo:6.1 .
-
+- docker
+env:
+  global:
+  - IMAGE_NAME=basmalltalk/pharo:6.1
+  - secure: GynyKcEqwlJApNvX3lQTNgDJ6Pe1z4lUsOiroZfu2aVQh3b3sZZdTOka/WlmU3VTrXf65u94aGPUWR39a5wAcuZUwKn/MPlAIymDf4bGfCf4FehbGGOblKND+joqBBfblnfvAw3dK6gbzvyyJdnlWs2TEptlXlLUWK/gtU1gL2UhW1quFePAl7PhQC9XnJs8MhKjrn9aRW1HdvHTUC7whh3L0q2RB/sT4bj4v4spVm4Gbrh70Ezz4y0zfe8qFSagVa9C+cfN+skD2dqLnxmPS36aAmQ5Gb2Isp081zzYt38bX/FmkbGpqIiP0NHmpG9X9JzKxi2z7hLsWwlWd5kauaaBrMiOoF4It+7qvxGfbq4/zJvhggo10YW/dnYceh2nZ2jAo64FTHHls6i01ZizPaDNjH8gjLVbJf/aAf5vpAoNW0eRcPzLG+gXyRCHbJn09By5ItbZRrJx2GSE12Qnc7KmiJSHp2E3nLTR+kq3VzfAMr41gb4m9lF9/ZDDcCaQIudiVctku0BsPcRCv0GeI9vGYQ2NkB4NuXePxepB05YnktJ2HeeNZi2OMbO/w8zLbM1Nz1torTrB5aIcinF3JWnqf9j/TUpOifVGaHakXnAG0FgIT+/YBBwwbryfzZEN0M84rcQCTxQbpSZuXMeDflodlGrhQ7t9u4BvaXcQ0w0=
+  - secure: NhM3DCPYI6KM8+h6WeDsRYXOz0kAJKPlDmjkLxZzFszn12auUB/RUNqMuRQBrZzfniG8ytfuN7hGRGS2HWl1wDK6EDjmMJcOWABWQ4uZbqRz8HyvTVjCLvO5FPTiIcJ5OqUXckVPJ5YiwbOl9gIR5iWt1xvuxZEzCS2rKb8ctZNTq+cHnzMCl4UmjjDEeUmZBPj1gMlxqT+ywAmB37lvha7Wit7UhNFkOzVTuv/XoutS+kHcEopeLwfqfIlUnAL56EbLocLmjgF4ZbV7pfd3011ew6BAZ/XFWfM5R1u/jCtb8uLGdw9LM3lYkqsKxakCjoGe0MkJ2GuBubAH/7Zz8V08GfRERSO4yRJDD5jvsUuc524Hco29nRa7IJua8bnsT86/7BCqrIXTKqAZxy0AxDHkryQf9TGXxmaLxBjIhkCrjes8+Dguf09N5oeggU95aFW1dTj9ANnTEjcQCxd6Z/UOE7n46mkqX44W3adLdQt/eeHGPEuxc5D8KRnIrm7KLJw2nvHSEVwPJ1UbQA+3GlOqQc+SrQ1FT2OQHmBbdbpyv4U0JYh7dQvUueOE2qmOSx/s7yz4IdCuoDgi5PhSzq0hSyKnqbRnOwPTSCp19j1qDDDpIdszUTxp6iN6J7F+PpRzaDS4GjnWquKdhCuGWM1lKzrfANATz095XBdGP2I=
+before_script:
+- docker pull "$IMAGE_NAME" || true
+script:
+- docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+before_deploy:
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 deploy:
-    provider: script
-    script: bash docker_push
-    on:
-        branch: master
-
+  provider: script
+  script: docker push "${IMAGE_NAME}"
+  on:
+    branch: master
