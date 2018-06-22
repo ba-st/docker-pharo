@@ -1,6 +1,8 @@
 # Docker-Pharo
 
-Docker image for pharo 6.1
+[![Build Status](https://travis-ci.org/ba-st/docker-pharo.svg?branch=master)](https://travis-ci.org/ba-st/docker-pharo)
+
+Docker image for pharo 6.1 [basmalltalk/pharo:6.1](https://hub.docker.com/r/basmalltalk/pharo/)
 
 The Pharo VM is in _/opt/pharo_, under user `pharo`
 
