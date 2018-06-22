@@ -6,12 +6,10 @@ env:
   - IMAGE_NAME=basmalltalk/pharo:6.1
   - secure: XeW+mXoCTKfPL1jez+2z5ZxBsinfXnoaHMk7aproBAOfLtyhohIio9Wz5eOlW3DsJ7HtQjVa9SlStg8oZZqqjnRAbWHltmuellwpDT2Y5uD18442jjbo66isee83paPFclrVxSiTtxa8AqJvU5tjEqNfiWS1Xd78X1GUNhn3RilyMaKXMHFn6uK9rVYwwRUNbdKHEa65rNxjVDmoeiAMfJTFb9ozCxOoKMB7mYlU2CULWVIop3MblECJsGCyX2dYQPMdEfXy4grHVrvlGkU7R/dD2z73HPJaeab2Ga2lsJo+fwSmQs3RbPI56zNseFJvsvkzKxxrINqcclPb5Zt+xy82FiGuNRKRCHJ1eCr2toDEPjtVBqoCiRcd6OSkFTCSfK19EUgP2O5sQTKxUvsckCTdTliVYhxt2rCUcNBCIDnuBV6zjFT4wtoJM6yl2X0hlABE8E15O+Yk/d4NmLMXWS1ZMydhgvEJBH8ULh81W/xkzX6c9vEy9hX9c5HTTL/ZNhp7kuSABqbCACHQoP8AJzS30+voWTD41P/r9PxJVHMmyFm2+TYrbOZ39H0+PBencZlT4fNKu8mouUxEGr0zwq7b6AyeYUDvwlIpw9VNAm3zu62oN56ozLYKinz0fwA9AfBm544ESYvCdtzleYrc0eiVoE70FpLPTndi+2bLS4c=
   - secure: MwLQ+5czgJKpvmd3xhmh07WnvHPDqG8iUnz8njOvgRltKXHPSW3t4vvSibf+Z6DhDluqTtvdPqDttC0Zi983bhVONj4gFOjoCcL/RESIpo//A5/eCe15nC6S8Rh3GIHxGEa5ONWKHAJUNJiYZpwTxFGbyMBeka3VPoohgswIrKj0ZOQ8TGSipjoNbsVUOiMNae/vv60K29vYKrTVc65zCgwBttJ7YqK+/7oPIgFnAvkeJNNvdxPPtcpSekIfRQkYaxcs+eBhJzYZUaSKKPj15MqQRxXGTwg+rsJy4rGQ1wfT99UVzjTSGCNMYkfu0SVqJ0pt5tia27UFxVI3cG6tnD08/vTVpASNez1j5Lq1omI3So1QX9wm0+Cx+6O0PsmtCxZkA1OzAOK94a7H0JOnP9aV0zUjsEsnVPmOHBq+R67dZKdkNK+LjLHsSDW++pa7WUzGdhG6Z3TCn3BAqxb4Epapmjfr7D6+ODrRoMEcfFMTRNBONH1VOv+AWJpQAawOtVoEogh1aEHGOR+8G8bwzzdJ5AVE4V1ImsyVmDUd+mjsoaFMxAmXIH2GoGV1L3vN6W8ECEUEJ6GAOS5crOOjtkruKFGQnH1yr/XDxbQXR/GmwoTtqWqJW+JsrmG1a23J9mHsm1ZBYYIk1itzjeLM/8IVmWvHTZHLnARAaDyw4S4=
-before_script:
-- docker pull "$IMAGE_NAME" || true
 script:
-- docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+- docker build --pull --tag "${IMAGE_NAME}" .
 before_deploy:
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+- echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USER}" --password-stdin
 deploy:
   provider: script
   script: docker push "${IMAGE_NAME}"
