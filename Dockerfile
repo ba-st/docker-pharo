@@ -28,8 +28,7 @@ RUN curl get.pharo.org/vm61 | bash \
   pharo-vm/lib/pharo/*/vm-display-fbdev.so \
   pharo-vm/lib/pharo/*/vm-display-X11.so \
   pharo-vm/lib/pharo/*/vm-sound-ALSA.so \
-  pharo-vm/lib/pharo/*/vm-sound-OSS.so \
-  pharo-vm/lib/pharo/*/Pharo*.sources
+  pharo-vm/lib/pharo/*/vm-sound-OSS.so
 
 # Run as another user
 RUN groupadd --gid $PHARO_GID pharo \
