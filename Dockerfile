@@ -29,12 +29,12 @@ RUN dpkg --add-architecture i386 \
   && rm --recursive --force \
     pharo-ui \
     pharo-vm/lib/pharo/*/__MACOSX/ \
-    pharo-vm/lib/pharo/*/B3DAcceleratorPlugin.so \
-    pharo-vm/lib/pharo/*/libgit2.so.0.23 \
-    pharo-vm/lib/pharo/*/vm-display-fbdev.so \
-    pharo-vm/lib/pharo/*/vm-display-X11.so \
-    pharo-vm/lib/pharo/*/vm-sound-ALSA.so \
-    pharo-vm/lib/pharo/*/vm-sound-OSS.so \
+    pharo-vm/lib/pharo/*/B3DAcceleratorPlugin.* \
+    pharo-vm/lib/pharo/*/libgit2.*.0.23 \
+    pharo-vm/lib/pharo/*/vm-display-fbdev.* \
+    pharo-vm/lib/pharo/*/vm-display-X11.* \
+    pharo-vm/lib/pharo/*/vm-sound-ALSA.* \
+    pharo-vm/lib/pharo/*/vm-sound-OSS.* \
   && groupadd --gid $PHARO_GID pharo \
   && useradd --uid $PHARO_UID --gid $PHARO_GID --home-dir /opt/pharo --no-create-home --no-user-group pharo \
   && chown --recursive pharo:pharo /opt/pharo \
