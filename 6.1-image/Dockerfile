@@ -1,4 +1,5 @@
-FROM ubuntu:16.04
+FROM debian:jessie-slim
+# Using jessie-slim because stable-slim only has libssl1.0.2, not libssl1.0.0
 
 LABEL maintainer="serpi90@gmail.com"
 
