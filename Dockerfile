@@ -29,8 +29,6 @@ RUN dpkg --add-architecture i386 \
   && rm --recursive --force \
     pharo-ui \
     pharo-vm/lib/pharo/*/__MACOSX/ \
-    pharo-vm/lib/pharo/*/B3DAcceleratorPlugin.* \
-    pharo-vm/lib/pharo/*/libgit2.*.0.23 \
     pharo-vm/lib/pharo/*/vm-display-fbdev.* \
     pharo-vm/lib/pharo/*/vm-display-X11.* \
     pharo-vm/lib/pharo/*/vm-sound-ALSA.* \
