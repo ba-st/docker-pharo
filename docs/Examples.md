@@ -32,7 +32,7 @@ An example of a balanced service using [Traefik](https://docs.traefik.io/) as a 
 - The file [docker-compose.yml](examples/balanced-pharo-date/docker-compose.yml) describes which services to run, which files to mount, and some other configuration.
 - The file [traefik.toml](examples/balanced-pharo-date/traefik.toml) is the traefik configuration file.
 
-For more information see the [Traefik docker docs](https://docs.traefik.io/configuration/backends/docker/)
+For more information see the [Traefik docker docs](https://docs.traefik.io/configuration/backends/docker/).
 
 To run this, first build the pharo-date image as described above, and then on the [balanced-pharo-date](examples/balanced-pharo-date) folder run
 
@@ -52,7 +52,7 @@ docker-compose up --scale date=3
 
 If you don't know what a swarm is,
 or don't have a swarm up and running,
-please skip this section.
+please skip this section or start here: [Docker Swarm Mode Overview](https://docs.docker.com/engine/swarm/)
 
 Similar to balanced-pharo-date but running on a docker swarm, provided because the configuration for traefik differs.
 
