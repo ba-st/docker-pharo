@@ -19,11 +19,11 @@ To run it (use `CTRL + C` to stop it):
 docker run --interactive --tty --rm --publish 8080:8080 pharo-date
 ```
 
-## [pharo-date.multistage](examples/pharo-date.multistage)
+## [pharo-date-multistage](examples/pharo-date-multistage)
 
 Same as **pharo-date** but using a [multistage build](https://docs.docker.com/develop/develop-images/multistage-build/) which reduces the final docker image size. (222MB -> 176MB at the time of writing)
 
-It's built and run in the same way as _pharo-date_ but inside the [pharo-date.multistage](examples/pharo-date.multistage) folder.
+It's built and run in the same way as _pharo-date_ but inside the [pharo-date-multistage](examples/pharo-date-multistage) folder.
 
 ## [balanced-pharo-date](examples/balanced-pharo-date)
 
