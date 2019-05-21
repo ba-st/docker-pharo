@@ -1,7 +1,7 @@
 FROM alpine as download
 WORKDIR /opt/pharo
 RUN set -eu; \
-	apk add --update curl unzip bash && curl get.pharo.org/vm61 | bash; \
+	apk add --update curl unzip bash && curl get.pharo.org/64/vm70 | bash; \
 	sed --regexp-extended --in-place 's/--nodisplay/-vm-sound-null -vm-display-null/' pharo; \
 	rm -rf \
 		pharo-ui \
@@ -24,13 +24,12 @@ ARG PHARO_UID=7431
 ARG PHARO_GID=7431
 
 RUN set -eu; \
-	dpkg --add-architecture i386; \
 	apt-get update; \
 	apt-get --assume-yes --no-install-recommends install \
 		ca-certificates \
-		libcurl3-gnutls:i386 \
-		libfreetype6:i386 \
-		libstdc++6:i386 \
+		libcurl3-gnutls \
+		libfreetype6 \
+		libstdc++6 \
 		; \
 	apt-get clean; \
 	rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
@@ -40,4 +39,3 @@ RUN set -eu; \
 COPY --from=download --chown=pharo:pharo /opt/pharo /opt/pharo
 WORKDIR /opt/pharo
 USER pharo
-
