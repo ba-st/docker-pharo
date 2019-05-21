@@ -3,14 +3,13 @@ services:
   date:
     image: pharo-date
     labels:
-      traefik.enable: true
       traefik.port: 8080
       traefik.frontend.rule: "HostRegexp:{catchall:.*}" # Match all requests
   balancer:
     # See https://docs.traefik.io/configuration/backends/docker/
     image: traefik:v1.7
+    command: --docker --docker.watch
     ports:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # Required because of docker backend, so traefik can get docker data.
-      - ./traefik.toml:/traefik.toml:ro # Traefik configuration file

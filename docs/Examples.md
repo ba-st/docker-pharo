@@ -30,7 +30,6 @@ It's built and run in the same way as _pharo-date_ but inside the [pharo-date-mu
 An example of a balanced service using [Traefik](https://docs.traefik.io/) as a load balancer, to be run using `docker-compose` (on a single machine)
 
 - The file [docker-compose.yml](examples/balanced-pharo-date/docker-compose.yml) describes which services to run, which files to mount, and some other configuration.
-- The file [traefik.toml](examples/balanced-pharo-date/traefik.toml) is the traefik configuration file.
 
 For more information see the [Traefik docker docs](https://docs.traefik.io/configuration/backends/docker/).
 

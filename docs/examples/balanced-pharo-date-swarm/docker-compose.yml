@@ -5,13 +5,12 @@ services:
     deploy:
       replicas: 2
       labels:
-        traefik.enable: "true"
         traefik.port: 8080
         traefik.frontend.rule: "HostRegexp:{catchall:.*}" # Match all requests
   balancer:
     image: traefik:v1.7
+    command: --docker --docker.watch --docker.swarmmode
     ports:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # Required because of docker backend, so traefik can get docker data.
-      - ./traefik.toml:/traefik.toml:ro # Traefik configuration file
