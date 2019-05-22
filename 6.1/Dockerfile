@@ -1,43 +1,51 @@
 FROM alpine as download
+
+RUN apk add --update unzip
+
 WORKDIR /opt/pharo
-RUN set -eu; \
-	apk add --update curl unzip bash && curl get.pharo.org/vm61 | bash; \
-	sed --regexp-extended --in-place 's/--nodisplay/-vm-sound-null -vm-display-null/' pharo; \
-	rm -rf \
-		pharo-ui \
-		pharo-vm/lib/pharo/*/__MACOSX/ \
-		pharo-vm/lib/pharo/*/*.a \
-		pharo-vm/lib/pharo/*/vm-display-X11.* \
-		pharo-vm/lib/pharo/*/vm-display-fbdev.* \
-		pharo-vm/lib/pharo/*/vm-sound-ALSA.* \
-		pharo-vm/lib/pharo/*/vm-sound-NAS.* \
-		pharo-vm/lib/pharo/*/vm-sound-OSS.* \
-		pharo-vm/lib/pharo/*/vm-sound-pulse.* \
-		; \
-	chmod -R 775 pharo pharo-vm
+
+ADD http://files.pharo.org/get-files/61/pharo-linux-stable.zip .
+ADD http://files.pharo.org/get-files/61/sources.zip .
+
+RUN set -eux; \
+  unzip pharo-linux-stable.zip; \
+  unzip sources.zip; \
+  true
+RUN set -eux; \
+  mv lib/pharo/*/ vm/; \
+  mv *.sources vm/; \
+  rm -rf \
+    vm/__MACOSX/ \
+    vm/*.a \
+    vm/vm-display-X11.* \
+    vm/vm-display-fbdev.* \
+    vm/vm-sound-ALSA.* \
+    vm/vm-sound-NAS.* \
+    vm/vm-sound-OSS.* \
+    vm/vm-sound-pulse.* \
+    ; \
+  true
 
 FROM debian:9-slim
 LABEL maintainer="serpi90@gmail.com"
-
-# By default use an arbitrary userid and groupid of the pharo user
-ARG PHARO_UID=7431
-ARG PHARO_GID=7431
-
-RUN set -eu; \
-	dpkg --add-architecture i386; \
-	apt-get update; \
-	apt-get --assume-yes --no-install-recommends install \
-		ca-certificates \
-		libcurl3-gnutls:i386 \
-		libfreetype6:i386 \
-		libstdc++6:i386 \
-		; \
-	apt-get clean; \
-	rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
-	groupadd --gid $PHARO_GID pharo; \
-	useradd --uid $PHARO_UID --gid $PHARO_GID --home-dir /opt/pharo --no-create-home --no-user-group pharo
-
-COPY --from=download --chown=pharo:pharo /opt/pharo /opt/pharo
 WORKDIR /opt/pharo
-USER pharo
+RUN set -eux; \
+  dpkg --add-architecture i386; \
+  apt-get update; \
+  apt-get install --assume-yes --no-install-recommends \
+    ca-certificates \
+    libcurl3-gnutls:i386 \
+    libfreetype6:i386 \
+    libstdc++6:i386 \
+    ; \
+  apt-get clean; \
+  groupadd --gid 7431 pharo; \
+  useradd --uid 7431 --gid 7431 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
+  echo '/opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /usr/local/bin/pharo; \
+  chmod a+x /usr/local/bin/pharo; \
+  true
 
+COPY --from=download --chown=pharo:pharo /opt/pharo/vm /opt/pharo/
+
+USER pharo
