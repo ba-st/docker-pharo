@@ -5,15 +5,12 @@ RUN apk add --update unzip
 WORKDIR /opt/pharo
 
 ADD http://files.pharo.org/get-files/70/pharo64-linux-stable.zip .
-ADD http://files.pharo.org/get-files/70/sources.zip .
 
-RUN set -eux; \
+RUN set -eu; \
   unzip pharo64-linux-stable.zip; \
-  unzip sources.zip; \
   true
-RUN set -eux; \
+RUN set -eu; \
   mv lib/pharo/*/ vm/; \
-  mv *.sources vm/; \
   rm -rf \
     vm/__MACOSX/ \
     vm/*.a \
@@ -28,7 +25,7 @@ RUN set -eux; \
 
 FROM debian:9-slim
 LABEL maintainer="serpi90@gmail.com"
-
+WORKDIR /opt/pharo
 RUN set -eu; \
   apt-get update; \
   apt-get install --assume-yes --no-install-recommends \
@@ -41,10 +38,12 @@ RUN set -eu; \
   groupadd --gid 7431 pharo; \
   useradd --uid 7431 --gid 7431 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
-  echo '/opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /usr/local/bin/pharo; \
+  echo '#!/bin/bash\necho /opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /opt/pharo/pharo; \
+  ln -s /opt/pharo/pharo /usr/local/bin/pharo; \
   chmod a+x /usr/local/bin/pharo; \
+  chown 7431:7431 /opt/pharo -R; \
   true
 
-COPY --from=download --chown=pharo:pharo /opt/pharo/vm /opt/pharo/
+COPY --from=download --chown=pharo:pharo /opt/pharo/vm /opt/pharo/vm
 
 USER pharo

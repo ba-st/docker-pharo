@@ -1,0 +1,11 @@
+services:
+  - docker
+
+script:
+  - docker build 6.1 -t basmalltalk/pharo:6.1
+  - docker build 6.1-image -t basmalltalk/pharo:6.1-image
+  - docker build 7.0 -t basmalltalk/pharo:7.0
+  - docker build 7.0-image -t basmalltalk/pharo:7.0-image
+  - docker build docs/examples/pharo-date
+  - docker build docs/examples/pharo-date-multistage
+  - docker run -it --rm basmalltalk/pharo:7.0-image pharo Pharo.image eval 2 + 3
