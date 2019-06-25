@@ -2,16 +2,21 @@
 # See https://docs.docker.com/develop/develop-images/multistage-build/
 
 # Stage 1: Load the project
-FROM basmalltalk/pharo:6.1-image AS loader
+FROM basmalltalk/pharo:7.0-image AS loader
 COPY load-project.st ./
-RUN ./pharo Pharo.image load-project.st --save --quit
+RUN pharo Pharo.image load-project.st --save --quit
 
 # Stage 2: Copy the resulting Pharo.image with our project loaded
 # into a new docker image with just the vm
-FROM basmalltalk/pharo:6.1
-WORKDIR /opt/pharo/
-COPY --from=loader --chown=pharo /opt/pharo/Pharo.image ./
-COPY --from=loader --chown=pharo /opt/pharo/Pharo.changes ./
+FROM basmalltalk/pharo:7.0
+WORKDIR /app
+COPY --from=loader /opt/pharo/Pharo.image ./
+COPY --from=loader /opt/pharo/Pharo.changes ./
+COPY --from=loader /opt/pharo/Pharo*.sources ./
 COPY start.st ./
 
-CMD [ "/opt/pharo/pharo", "Pharo.image", "start.st" ]
+USER root
+RUN chown pharo:pharo /app -R
+
+USER pharo
+CMD [ "pharo", "Pharo.image", "start.st" ]
