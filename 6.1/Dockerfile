@@ -42,7 +42,7 @@ RUN set -eu; \
   groupadd --gid 7431 pharo; \
   useradd --uid 7431 --gid 7431 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
-  echo '#!/bin/bash\necho /opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /opt/pharo/pharo; \
+  echo '#!/bin/bash\n/opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /opt/pharo/pharo; \
   ln -s /opt/pharo/pharo /usr/local/bin/pharo; \
   chmod a+x /usr/local/bin/pharo; \
   chown 7431:7431 /opt/pharo -R; \
