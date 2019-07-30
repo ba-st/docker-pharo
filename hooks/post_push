@@ -1,12 +1,4 @@
 #!/bin/bash
 set -eu
 
-VERSION=$DOCKER_TAG
-# shellcheck disable=SC2072
-if [[ $VERSION < '7.0' ]]
-then BASE_TAG=base-32
-else BASE_TAG=base-64
-fi
-
-docker push "$DOCKER_REPO:$BASE_TAG"
 docker push "$IMAGE_NAME-image"
