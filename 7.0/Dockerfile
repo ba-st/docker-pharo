@@ -12,13 +12,12 @@ RUN set -eu; \
     libstdc++6 \
     ; \
   apt-get clean; \
-  groupadd --gid 7431 pharo; \
-  useradd --uid 7431 --gid 7431 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
+  useradd --uid 7431 --gid 100 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
   echo '#!/bin/bash\n/opt/pharo/vm/pharo -vm-sound-null -vm-display-null "$@"' > /opt/pharo/pharo; \
   ln -s /opt/pharo/pharo /usr/local/bin/pharo; \
   chmod a+x /usr/local/bin/pharo; \
-    chown 7431:7431 /opt/pharo -R; \
+  chown 7431:100 /opt/pharo -R; \
   true
 
 
@@ -45,7 +44,7 @@ RUN set -eu; \
 
 # Copy vm into base image
 FROM base as vm
-COPY --from=download-vm --chown=pharo:pharo /opt/pharo/vm /opt/pharo/vm
+COPY --from=download-vm --chown=pharo:users /opt/pharo/vm /opt/pharo/vm
 USER pharo
 
 
@@ -63,6 +62,6 @@ RUN set -eu; \
 
 # Copy image into vm image
 FROM vm as image
-COPY --from=download-image --chown=pharo:pharo /opt/pharo/images /opt/pharo/
+COPY --from=download-image --chown=pharo:users /opt/pharo/images /opt/pharo/
 RUN chmod a+w /opt/pharo
 USER pharo

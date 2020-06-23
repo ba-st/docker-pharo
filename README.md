@@ -4,9 +4,7 @@
 
 Docker image for pharo [basmalltalk/pharo](https://hub.docker.com/r/basmalltalk/pharo/)
 
-The Pharo VM is in _/opt/pharo_, under user `pharo`
-
-The user UID and group GID can be customized on build, default to 7431.
+The Pharo VM is in _/opt/pharo_, under user `pharo (7431)`, group `users (100)`
 
 ## Useful stuff
 
