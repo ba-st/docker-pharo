@@ -16,7 +16,7 @@ COPY --from=loader /opt/pharo/Pharo*.sources ./
 COPY start.st ./
 
 USER root
-RUN chown pharo:pharo /app -R
+RUN chown pharo:users /app -R
 
 USER pharo
 CMD [ "pharo", "Pharo.image", "start.st" ]

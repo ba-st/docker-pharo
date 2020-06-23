@@ -1,0 +1,36 @@
+#!/bin/bash
+set -eu
+
+# We expect the docker tag to be a pharo version eg: 6.1 or 7.0.2
+VERSION=$DOCKER_TAG
+# shellcheck disable=SC2072
+# Base image before pharo 7 use 32 bit libraries, so use a different tag
+if [[ $VERSION < '7.0.0' ]]
+then BASE_TAG=base-32
+else BASE_TAG=base-64
+fi
+
+# Build base image: $DOCKER_REPO:base-32 or $DOCKER_REPO:base-64
+docker build \
+  --file "$DOCKERFILE_PATH" \
+  --tag "$DOCKER_REPO:$BASE_TAG" \
+  --target base \
+  .
+
+# Build image with vm: $DOCKER_REPO:version, eg: $DOCKER_REPO:6.1
+docker build \
+  --cache-from "$DOCKER_REPO:$BASE_TAG" \
+  --cache-from "$IMAGE_NAME" \
+  --file "$DOCKERFILE_PATH" \
+  --tag "$IMAGE_NAME" \
+  --target vm \
+  .
+
+# Build image with vm+image: $DOCKER_REPO:version-image, eg: $DOCKER_REPO:6.1-image
+docker build \
+  --cache-from "$IMAGE_NAME" \
+  --cache-from "$IMAGE_NAME" \
+  --file "$DOCKERFILE_PATH" \
+  --tag "$IMAGE_NAME-image" \
+  --target image \
+  .

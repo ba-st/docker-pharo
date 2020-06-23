@@ -4,13 +4,12 @@ LABEL maintainer="serpi90@gmail.com"
 WORKDIR /opt/pharo
 # hadolint ignore=DL3008
 RUN set -eu; \
-  dpkg --add-architecture i386; \
   apt-get update; \
   apt-get install --assume-yes --no-install-recommends \
     ca-certificates \
-    libcurl3-gnutls:i386 \
-    libfreetype6:i386 \
-    libstdc++6:i386 \
+    libcurl3-gnutls \
+    libfreetype6 \
+    libstdc++6 \
     ; \
   apt-get clean; \
   useradd --uid 7431 --gid 100 --home-dir /opt/pharo --no-create-home --no-user-group pharo; \
@@ -25,15 +24,10 @@ RUN set -eu; \
 # Download pharo vm and remove unwanted stuff
 FROM alpine:3.12 as download-vm
 WORKDIR /opt/pharo
-ADD http://files.pharo.org/get-files/61/pharo-linux-stable.zip ./
-ADD http://files.pharo.org/get-files/61/sources.zip ./
-RUN set -eu; \
-  unzip pharo-linux-stable.zip; \
-  unzip sources.zip; \
-  true
+ADD http://files.pharo.org/get-files/80/pharo64-linux-stable.zip ./
+RUN unzip pharo64-linux-stable.zip
 RUN set -eu; \
   mv lib/pharo/*/ vm/; \
-  mv ./*.sources vm/; \
   rm -rf \
     vm/__MACOSX/ \
     vm/*.a \
@@ -56,10 +50,10 @@ USER pharo
 # Download pharo image
 FROM download-vm as download-image
 WORKDIR /opt/pharo/images
-ADD http://files.pharo.org/get-files/61/pharo.zip ./
+ADD http://files.pharo.org/get-files/80/pharo64.zip ./
 RUN set -eu; \
-  unzip pharo.zip; \
-  rm pharo.zip; \
+  unzip pharo64.zip; \
+  rm pharo64.zip; \
   mv ./*.image Pharo.image; \
   mv ./*.changes Pharo.changes; \
   true

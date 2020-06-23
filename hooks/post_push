@@ -1,0 +1,6 @@
+#!/bin/bash
+set -eu
+# By default only the $DOCKER_REPO:version image is pushed
+# We want to save also the image containing vm+image
+
+docker push "$IMAGE_NAME-image"
