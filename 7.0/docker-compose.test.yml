@@ -1,7 +1,1 @@
-version: '3.4'
-services:
-  sut:
-    build:
-      context: .
-      target: image
-    command: pharo Pharo.image eval 2 + 3
+../docker-compose.test.yml
