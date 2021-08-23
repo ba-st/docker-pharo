@@ -1,5 +1,5 @@
 # Prepare a base image to use docker cache during build
-FROM debian:bullseye-slim as base
+FROM debian:11-slim as base
 LABEL maintainer="serpi90@gmail.com"
 WORKDIR /opt/pharo
 # hadolint ignore=DL3008
